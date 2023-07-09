@@ -12,8 +12,8 @@ int main()
 	static const int maxColorComponent = 255;
 	float aspectRatio = (float)imageWidth / imageHeight;
 
-	std::vector<Triangle> triangles = { Triangle(v3(-1.75, -1.75, -3), v3(1.75, -1.75, -3), v3(0, 1.75, -3)),
-										Triangle(v3(0, -1, -3), v3(1.5, 0, -3), v3(0, 1, -3)) };
+	std::vector<Triangle> triangles = { Triangle(my_v3(-1.75, -1.75, -3), my_v3(1.75, -1.75, -3), my_v3(0, 1.75, -3)),
+										Triangle(my_v3(0, -1, -3), my_v3(1.5, 0, -3), my_v3(0, 1, -3)) };
 
 	Camera cam;
 	cam.pan(-30.0F);
@@ -34,7 +34,7 @@ int main()
 				x = (2.0 * x) - 1.0;
 				y = 1.0 - (2.0 * y);
 				x *= aspectRatio;
-				v3 cameraRayDir(x, y, -1.0F);
+				my_v3 cameraRayDir(x, y, -1.0F);
 				cameraRayDir.normalize();
 				Ray cameraRay(cam.origin, cam.orient * cameraRayDir);
 				if (triangles[0].intersection(cameraRay)) {
@@ -54,5 +54,4 @@ int main()
 		cam.pan(6.0F);
 	}
 	return 0;
-    return 0;
 }

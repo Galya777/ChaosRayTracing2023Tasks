@@ -10,8 +10,8 @@ int main()
 	static const int maxColorComponent = 255;
 	float aspectRatio = (float)imageWidth / imageHeight;
 
-	std::vector<Triangle> triangles = { Triangle(v3(-1.75, -1.75, -3), v3(1.75, -1.75, -3), v3(0, 1.75, -3)),
-										Triangle(v3(0, -1, -3), v3(1.5, 0, -3), v3(0, 1, -3)) };
+	std::vector<Triangle> triangles = { Triangle(my_v3(-1.75, -1.75, -3), my_v3(1.75, -1.75, -3), my_v3(0, 1.75, -3)),
+										Triangle(my_v3(0, -1, -3), my_v3(1.5, 0, -3), my_v3(0, 1, -3)) };
 
 	std::ofstream ppmFileStream("rombcho.ppm", std::ios::out | std::ios::binary);
 	ppmFileStream << "P3\n";
@@ -27,9 +27,9 @@ int main()
 			x = (2.0 * x) - 1.0;
 			y = 1.0 - (2.0 * y);
 			x *= aspectRatio;
-			v3 cameraRayDir(x, y, -1.0F);
+			my_v3 cameraRayDir(x, y, -1.0F);
 			cameraRayDir.normalize();
-			Ray cameraRay(v3(0.0F, 0.0F, 0.0F), cameraRayDir);
+			Ray cameraRay(my_v3(0.0F, 0.0F, 0.0F), cameraRayDir);
 			if (triangles[0].intersection(cameraRay)) {
 				ppmFileStream << 25 << ' ' << 86 << ' ' << 255 << ' ';
 			}

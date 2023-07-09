@@ -27,7 +27,7 @@ int main() {
 			x = (2.0 * x) - 1.0;
 			y = 1.0 - (2.0 * y);
 			x *= aspectRatio;
-			v3 cameraRay(x, y, -1.0F);
+			my_v3 cameraRay(x, y, -1.0F);
 			cameraRay.normalize();
 			RGB.red = (int)(((cameraRay.get_x() + 1) / 2.0F) * 255);
 			RGB.green = (int)(((cameraRay.get_y() + 1) / 2.0F) * 255);
