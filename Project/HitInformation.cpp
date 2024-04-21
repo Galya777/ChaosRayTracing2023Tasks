@@ -1,0 +1,1 @@
+#include "HitInformation.h"
