@@ -1,28 +1,69 @@
 ﻿#include <iostream>
-#include "../Homework7/Scene.h"
+#include "Scene.h"
 int main()
 {
-	Renderer renderer;
-	SceneParser parser;
-
-	//Problem 1
 	Scene scene1;
-	parser.parse("input/scene0.crtscene", scene1);
-	renderer.render(scene1, "output/scene0.ppm");
+	scene1.ParseScene("scene3.crtscene");
+	srand(time(NULL));
+	color colors[5] = {
+  {rand() % 256, rand() % 256, rand() % 256},
+  {rand() % 256, rand() % 256, rand() % 256},
+  {rand() % 256, rand() % 256, rand() % 256},
+  {rand() % 256, rand() % 256, rand() % 256},
+  {rand() % 256, rand() % 256, rand() % 256}
+	};
 
-	//Problem 2
-	//Scene scene2;
-	//parser.parse("input/scene1.crtscene", scene2);
-	//renderer.render(scene2, "output/scene1.ppm");
+	static const int maxColorComponent = 255;
+	float aspectRatio = (float)scene1.imageWidth / scene1.imageHeight;
 
-	//Problem 3
-	//Scene scene3;
-	//parser.parse("input/scene2.crtscene", scene3);
-	//renderer.render(scene3, "output/scene2.ppm");
+	std::ofstream ppmFileStream("scene3.ppm", std::ios::out | std::ios::binary);
+	ppmFileStream << "P3\n";
+	ppmFileStream << scene1.imageWidth << " " << scene1.imageHeight << "\n";
+	ppmFileStream << maxColorComponent << "\n";
+	for (int rowIdx = 0; rowIdx < scene1.imageHeight; ++rowIdx) {
+		for (int colIdx = 0; colIdx < scene1.imageWidth; ++colIdx) {
+			float x = (float)colIdx + 0.5;
+			float y = (float)rowIdx + 0.5;
+			x /= scene1.imageWidth;
+			y /= scene1.imageHeight;
+			x = (2.0 * x) - 1.0;
+			y = 1.0 - (2.0 * y);
+			x *= aspectRatio;
+			my_v3 cameraRayDir(x, y, -1.0F);
+			cameraRayDir.normalize();
+			Ray cameraRay(scene1.camera.origin, scene1.camera.orient * cameraRayDir);
+			float closestDistance = FLT_MAX;
+			int renderItemIdx = -1;
+			int renderTriangleIdx = -1;
+			for (auto itemIdx = 0; itemIdx < scene1.items.size(); ++itemIdx) {
+				for (auto triangleIdx = 0; triangleIdx < scene1.items[itemIdx].indicies.size(); ++triangleIdx) {
+					TriangleIdxes triangleIndex = scene1.items[itemIdx].indicies[triangleIdx];
+					Triangle triangle(scene1.items[itemIdx].vertices[triangleIndex.v0],
+						scene1.items[itemIdx].vertices[triangleIndex.v1],
+						scene1.items[itemIdx].vertices[triangleIndex.v2]);
+					float distance = FLT_MAX;
+					if (triangle.intersection(cameraRay, distance)) {
+						if (distance < closestDistance) {
+							closestDistance = distance;
+							renderItemIdx = itemIdx;
+							renderTriangleIdx = triangleIdx;
+						}
+					}
+				}
+			}
 
-	//Problem 4
-	//Scene scene4;
-	//parser.parse("input/scene3.crtscene", scene4);
-	//renderer.render(scene4, "output/scene3.ppm");
+			color triColor;
+			if (renderTriangleIdx != -1) {
+				triColor = colors[renderTriangleIdx % 5];
+			}
+			else {
+				triColor = scene1.bgc;
+			}
+			ppmFileStream << triColor.red << ' ' << triColor.green << ' ' << triColor.blue << ' ';
+		}
+		ppmFileStream << "\n";
+	}
+	ppmFileStream.close();
+	return 0;
 	return 0;
 }
