@@ -2,6 +2,7 @@
 #include "../Homework8/Scene.h"
 int main()
 {
+<<<<<<< HEAD
 	Scene scene1;
 	scene1.ParseScene("scene0.crtscene");
 	srand(time(NULL));
@@ -64,5 +65,8 @@ int main()
 		ppmFileStream << "\n";
 	}
 	ppmFileStream.close();
+=======
+	
+>>>>>>> d6d3756b290dbab62b4014a716fb1a91146cbb2f
 	return 0;
 }

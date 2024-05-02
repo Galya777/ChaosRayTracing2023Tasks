@@ -64,5 +64,9 @@ int main()
 		ppmFileStream << "\n";
 	}
 	ppmFileStream.close();
+<<<<<<< HEAD
+=======
+	return 0;
+>>>>>>> d6d3756b290dbab62b4014a716fb1a91146cbb2f
 	return 0;
 }
