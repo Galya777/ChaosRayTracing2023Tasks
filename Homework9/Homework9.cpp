@@ -2,7 +2,6 @@
 #include "../Homework8/Scene.h"
 int main()
 {
-<<<<<<< HEAD
 	Scene scene1;
 	scene1.ParseScene("scene0.crtscene");
 	srand(time(NULL));
